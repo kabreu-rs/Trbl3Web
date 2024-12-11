@@ -1,0 +1,56 @@
+<%- include('includes/head') %>
+
+<body>
+    <header>
+        <h1>Permissões</h1>
+    </header>
+
+    <div>
+        <button onclick="window.location.href='/Usuario'">
+            <span>Voltar</span>
+        </button>
+    </div>
+
+    <div>
+        <div>
+            <img src="/<%= data.user.imageId %>" alt="Imagem do usuário">
+            <h1>Nome: <%= data.user.name %></h1>
+            <h1>Email: <%= data.user.email %></h1>
+        </div>
+
+        <div>
+            <h1>Permissões</h1>
+            <form action="/usuario/alteracaoPermisao/<%= data.user.id %>" method="post">
+                <div>
+                    <% if(data.permissions.includes(2) || data.permissions.includes(1)){ %>
+                        <input type="checkbox" id="permissions" name="permissions" value="2" checked>
+                    <% } else { %>
+                        <input type="checkbox" id="permissions" name="permissions" value="2">
+                    <% } %>
+                    <label for="permissions">Financeiro</label>
+                </div>
+
+                <div>
+                    <% if(data.permissions.includes(3) || data.permissions.includes(1)){ %>
+                        <input type="checkbox" id="permissions" name="permissions" value="3" checked>
+                    <% } else { %>
+                        <input type="checkbox" id="permissions" name="permissions" value="3">
+                    <% } %>
+                    <label for="permissions">Relatórios</label>
+                </div>
+
+                <div>
+                    <% if(data.permissions.includes(4) || data.permissions.includes(1)){ %>
+                        <input type="checkbox" id="permissions" name="permissions" value="4" checked>
+                    <% } else { %>
+                        <input type="checkbox" id="permissions" name="permissions" value="4">
+                    <% } %>
+                    <label for="permissions">Produto</label>
+                </div>
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

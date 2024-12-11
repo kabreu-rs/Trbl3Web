@@ -1,0 +1,55 @@
+<%- include('includes/head') %>
+
+<body>
+    <header>
+        <h1>Listagem de Usuários</h1>
+        <a href="/auth/logout">
+            <button>Sair</button>
+        </a>
+    </header>
+
+    <div>
+        <div onclick="window.location.href='/perfil'">Perfil</div>
+        <div onclick="window.location.href='/usuario'">Usuários</div>
+        <div onclick="window.location.href='/financeiro'">Financeiro</div>
+        <div onclick="window.location.href='/relatorios'">Relatórios</div>
+        <div onclick="window.location.href='/produtos'">Produtos</div>
+    </div>
+
+    <div>
+        <% for (let i = 0; i < data.users.length; i++) { %>
+            <div>
+                <img src="/<%= data.users[i].imageId %>" alt="Imagem do usuário">
+                <div>
+                    <strong>Nome:</strong> <%= data.users[i].name %>
+                </div>
+                <div>
+                    <strong>Email:</strong> <%= data.users[i].email %>
+                </div>
+                <div>
+                    <strong>Role:</strong> <%= data.users[i].role %>
+                </div>
+                <div>
+                    <strong>Liberados:</strong>
+                    <div onclick="window.location.href='/perfil'">Perfil</div>
+                    <% for (let j = 0; j < data.users[i].permissions.length; j++) { %>
+                        <% if (data.users[i].role == 'SuperUsuário' || data.users[i].role == 'Administrador') { %>
+                            <div onclick="window.location.href='/usuario'">Usuários</div>
+                        <% } %>
+                        <% if (data.users[i].permissions[j].module.name == 'financeiro' || data.users[i].permissions[j].module.name == 'todos') { %>
+                            <div onclick="window.location.href='/financeiro'">Financeiro</div>
+                        <% } %>
+                        <% if (data.users[i].permissions[j].module.name == 'relatorios' || data.users[i].permissions[j].module.name == 'todos') { %>
+                            <div onclick="window.location.href='/relatorios'">Relatórios</div>
+                        <% } %>
+                        <% if (data.users[i].permissions[j].module.name == 'produtos' || data.users[i].permissions[j].module.name == 'todos') { %>
+                            <div onclick="window.location.href='/produtos'">Produtos</div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</body>
+
+</html>

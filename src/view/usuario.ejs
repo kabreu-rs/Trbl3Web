@@ -1,0 +1,62 @@
+<%- include('includes/head') %>    
+    
+<body>
+
+    <header>
+        <h1>Gestão de Usuários</h1>
+    </header>
+
+    <div>
+        <button onclick="window.location.href='/users'">
+            <span>&#8592;</span> Lista de Usuários
+        </button>
+        <button onclick="window.location.href='/gestaoUsuario/add'">
+            <span>+</span> Adicionar Usuário
+        </button>
+    </div>
+
+    <div>
+        <div>
+            <div>Editar Permissões - <span>&#9997;</span></div>
+            <div>Excluir Usuário - <span>&#128465;</span></div>
+        </div>
+    </div>
+
+    <div>
+        <!-- Iteração sobre os usuários -->
+        <!-- Comece o loop aqui -->
+        <% for (let i=0; i < users.length; i++) { %>
+            <div>
+                <div>
+                    <img src="/<%= users[i].imageId %>" alt="Imagem do usuário">
+                    <div>
+                        <strong>Nome:</strong> <%= users[i].name %>
+                    </div>
+                    <div>
+                        <strong>Email:</strong> <%= users[i].email %>
+                    </div>
+                    <div>
+                        <strong>Role:</strong> <%= users[i].role %>
+                    </div>
+                </div>
+
+                <div>
+                    <% if(users[i].role!=='Administrador' ){%>
+                        <span onclick="window.location.href='/usuario/alteracaoPermissao/<%= users[i].id %>'">&#9997;</span>
+                    <% }%>
+                    <span onclick="deleteUser('<%= users[i].id %>', '<%= users[i].name %>')">&#128465;</span>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        function deleteUser(id, nome) {
+            if (window.confirm("Você deseja deletar usuário " + nome + "?")) {
+                fetch('/usuario/delete/' + id, { method: 'DELETE' }).then(res => { window.location.href = '/usuario' });
+            }
+        }
+    </script>
+
+</body>
+</html>
