@@ -40,12 +40,10 @@ console.log({
 
 const app = express();
 const pathViews = path.join(dir, '/view');
-//console.log(`Path to views: ${pathViews}`); 
 app.set('view engine', 'ejs');
 app.set('views', pathViews);
 
-// Middleware
-app.use(express.static('uploads')); // Torna a pasta de uploads estática
+app.use(express.static('uploads')); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -63,7 +61,6 @@ app.get('/home', (req, res) => {
     res.render('home', { user: req.session.user });
 });
 
-// Importação e uso das rotas
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
 app.use('/financeiro', financeiroRouter);
@@ -73,7 +70,6 @@ app.use('/perfil', perfilRouter);
 app.use('/usuario', usuarioRouter);
 app.use('/acesso', acessoRouter);
 
-// Criação inicial de dados no banco de dados SQLite
 (async () => {
     const user = await prisma.user.findMany({ where: { role: 'SuperUsuário' } });
 
@@ -103,5 +99,5 @@ app.use('/acesso', acessoRouter);
         });
     }
 })();
-// Inicia o servidor
+
 app.listen(3000, () => console.log(`Server iniciou na porta 3000`));

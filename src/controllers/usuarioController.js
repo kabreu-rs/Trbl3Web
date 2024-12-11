@@ -5,7 +5,6 @@ const prisma = new PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
 });
 
-// Função para listar usuários com base no cargo
 async function pageUsuario(req, res) {
     const role = req.session.user.role;
     const whereClause = role === 'SuperUsuário'
@@ -18,7 +17,6 @@ async function pageUsuario(req, res) {
     res.render('usuario', { users });
 }
 
-// Página para adicionar usuário
 function pageAddUser(req, res) {
     const data = {
         title: "Novo Usuário",
@@ -27,7 +25,6 @@ function pageAddUser(req, res) {
     res.render('formulario', { data });
 }
 
-// Adicionar um novo usuário ao sistema
 async function addUser(req, res) {
     const { name, email, password, role } = req.body;
 
@@ -47,7 +44,6 @@ async function addUser(req, res) {
     res.redirect("/usuario");
 }
 
-// Página para alterar permissões
 async function pagealteracaoPermissao(req, res) {
     const id = parseInt(req.params.id);
 
@@ -62,15 +58,12 @@ async function pagealteracaoPermissao(req, res) {
     res.render('alteracaopermissao', { data });
 }
 
-// Alterar permissões de um usuário
 async function alteracaoPermissao(req, res) {
     const id = parseInt(req.params.id);
     const { permissions = [] } = req.body;
 
-    // Remove permissões existentes
     await prisma.userPermission.deleteMany({ where: { userId: id } });
 
-    // Adiciona novas permissões
     if (permissions.includes("2") && permissions.includes("3") && permissions.includes("4")) {
         await prisma.userPermission.create({ data: { userId: id, moduleId: 1 } });
     } else {
@@ -84,11 +77,9 @@ async function alteracaoPermissao(req, res) {
     res.redirect("/usuario");
 }
 
-// Excluir um usuário
 async function deleteUser(req, res) {
     const id = parseInt(req.params.id);
 
-    // Remove permissões e logs antes de excluir o usuário
     await prisma.userPermission.deleteMany({ where: { userId: id } });
     await prisma.log.deleteMany({ where: { userId: id } });
 

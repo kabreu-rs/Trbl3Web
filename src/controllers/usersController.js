@@ -4,14 +4,13 @@ const prisma = new PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
 });
 
-// Função para buscar e listar usuários com permissões e módulos
 async function getUsers(req, res) {
     try {
         const users = await prisma.user.findMany({
             include: {
                 permissions: {
                     include: {
-                        module: true, // Inclui informações do módulo associado à permissão
+                        module: true, 
                     },
                 },
             },

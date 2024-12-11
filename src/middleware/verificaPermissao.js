@@ -4,13 +4,11 @@ const prisma = new PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
 });
 
-// Middleware para verificar permissões de acesso
 const verificaPermissao = async (req, res, next) => {
     try {
         const path = req.originalUrl.split('/')[1];
         const { email } = req.session.user;
 
-        // Busca o usuário com suas permissões e módulos
         const user = await prisma.user.findUnique({
             where: { email },
             include: {
@@ -26,24 +24,20 @@ const verificaPermissao = async (req, res, next) => {
 
         let hasPermission = false;
 
-        // Verifica permissões específicas por caminho
         if (['financeiro', 'produtos', 'relatorios'].includes(path)) {
             hasPermission = user.permissions.some(
                 (permission) => permission.module.name === path || permission.module.name === 'todos'
             );
         }
 
-        // Permissões para usuários administrativos
         if (path === 'Usuario' && ['Administrador', 'SuperUsuário'].includes(user.role)) {
             hasPermission = true;
         }
 
-        // Rotas abertas a todos os usuários logados
         if (['users', 'perfil', 'auth'].includes(path)) {
             hasPermission = true;
         }
 
-        // Log de acesso
         const logDescription = `Rota: '${req.originalUrl}' Teve seu acesso: ${
             hasPermission ? 'Liberado' : 'Negado'
         }`;
@@ -55,7 +49,6 @@ const verificaPermissao = async (req, res, next) => {
             },
         });
 
-        // Controle de acesso
         if (hasPermission) {
             next();
         } else {

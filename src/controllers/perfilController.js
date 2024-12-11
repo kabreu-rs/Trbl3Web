@@ -4,7 +4,6 @@ const prisma = new PrismaClient({
     log: ['query', 'info', 'warn', 'error'],
 });
 
-// Página do módulo perfil
 async function pagePerfil(req, res) {
     try {
         const id = parseInt(req.session.user.id);
@@ -24,7 +23,6 @@ async function pagePerfil(req, res) {
     }
 }
 
-// Alterar foto do perfil
 async function alterarFoto(req, res) {
     try {
         if (!req.file || !req.file.filename) {
